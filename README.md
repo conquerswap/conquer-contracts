@@ -1,6 +1,6 @@
-# Goose Finance
+# Conquer Swap
 
-https://goosedefi.com Feel free to read the code. More details coming soon.
+https://conquerswap.finance Feel free to read the code. More details coming soon.
 
 ## Deployed Contracts / Hash
 

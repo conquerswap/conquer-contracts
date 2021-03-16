@@ -2,17 +2,17 @@
 
 pragma solidity 0.6.12;
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
-import "./libs/IBEP20.sol";
-import "./libs/SafeBEP20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "./SafeMath.sol";
+import "./IBEP20.sol";
+import "./SafeBEP20.sol";
+import "./Ownable.sol";
 
-import "./EggToken.sol";
+import "./BoatToken.sol";
 
-// MasterChef is the master of Egg. He can make Egg and he is a fair guy.
+// MasterChef is the master of BOAT. He can make BOAT and he is a fair guy.
 //
 // Note that it's ownable and the owner wields tremendous power. The ownership
-// will be transferred to a governance smart contract once EGG is sufficiently
+// will be transferred to a governance smart contract once BOAT is sufficiently
 // distributed and the community can show to govern itself.
 //
 // Have fun reading it. Hopefully it's bug-free. God bless.
@@ -25,7 +25,7 @@ contract MasterChef is Ownable {
         uint256 amount;         // How many LP tokens the user has provided.
         uint256 rewardDebt;     // Reward debt. See explanation below.
         //
-        // We do some fancy math here. Basically, any point in time, the amount of EGGs
+        // We do some fancy math here. Basically, any point in time, the amount of BOATs
         // entitled to a user but is pending to be distributed is:
         //
         //   pending reward = (user.amount * pool.accEggPerShare) - user.rewardDebt
@@ -46,13 +46,13 @@ contract MasterChef is Ownable {
         uint16 depositFeeBP;      // Deposit fee in basis points
     }
 
-    // The EGG TOKEN!
-    EggToken public egg;
+    // The BOAT TOKEN!
+    BoatToken public boat;
     // Dev address.
     address public devaddr;
-    // EGG tokens created per block.
-    uint256 public eggPerBlock;
-    // Bonus muliplier for early egg makers.
+    // BOAT tokens created per block.
+    uint256 public boatPerBlock;
+    // Bonus muliplier for early boat makers.
     uint256 public constant BONUS_MULTIPLIER = 1;
     // Deposit Fee address
     address public feeAddress;
@@ -71,16 +71,16 @@ contract MasterChef is Ownable {
     event EmergencyWithdraw(address indexed user, uint256 indexed pid, uint256 amount);
 
     constructor(
-        EggToken _egg,
+        BoatToken _boat,
         address _devaddr,
         address _feeAddress,
-        uint256 _eggPerBlock,
+        uint256 _boatPerBlock,
         uint256 _startBlock
     ) public {
-        egg = _egg;
+        boat = _boat;
         devaddr = _devaddr;
         feeAddress = _feeAddress;
-        eggPerBlock = _eggPerBlock;
+        boatPerBlock = _boatPerBlock;
         startBlock = _startBlock;
     }
 
@@ -130,8 +130,8 @@ contract MasterChef is Ownable {
         uint256 lpSupply = pool.lpToken.balanceOf(address(this));
         if (block.number > pool.lastRewardBlock && lpSupply != 0) {
             uint256 multiplier = getMultiplier(pool.lastRewardBlock, block.number);
-            uint256 eggReward = multiplier.mul(eggPerBlock).mul(pool.allocPoint).div(totalAllocPoint);
-            accEggPerShare = accEggPerShare.add(eggReward.mul(1e12).div(lpSupply));
+            uint256 boatReward = multiplier.mul(boatPerBlock).mul(pool.allocPoint).div(totalAllocPoint);
+            accEggPerShare = accEggPerShare.add(boatReward.mul(1e12).div(lpSupply));
         }
         return user.amount.mul(accEggPerShare).div(1e12).sub(user.rewardDebt);
     }
@@ -156,10 +156,10 @@ contract MasterChef is Ownable {
             return;
         }
         uint256 multiplier = getMultiplier(pool.lastRewardBlock, block.number);
-        uint256 eggReward = multiplier.mul(eggPerBlock).mul(pool.allocPoint).div(totalAllocPoint);
-        egg.mint(devaddr, eggReward.div(10));
-        egg.mint(address(this), eggReward);
-        pool.accEggPerShare = pool.accEggPerShare.add(eggReward.mul(1e12).div(lpSupply));
+        uint256 boatReward = multiplier.mul(boatPerBlock).mul(pool.allocPoint).div(totalAllocPoint);
+        boat.mint(devaddr, boatReward.div(10));
+        boat.mint(address(this), boatReward);
+        pool.accEggPerShare = pool.accEggPerShare.add(boatReward.mul(1e12).div(lpSupply));
         pool.lastRewardBlock = block.number;
     }
 
@@ -217,13 +217,13 @@ contract MasterChef is Ownable {
         emit EmergencyWithdraw(msg.sender, _pid, amount);
     }
 
-    // Safe egg transfer function, just in case if rounding error causes pool to not have enough EGGs.
+    // Safe boat transfer function, just in case if rounding error causes pool to not have enough EGGs.
     function safeEggTransfer(address _to, uint256 _amount) internal {
-        uint256 eggBal = egg.balanceOf(address(this));
-        if (_amount > eggBal) {
-            egg.transfer(_to, eggBal);
+        uint256 boatBal = boat.balanceOf(address(this));
+        if (_amount > boatBal) {
+            boat.transfer(_to, boatBal);
         } else {
-            egg.transfer(_to, _amount);
+            boat.transfer(_to, _amount);
         }
     }
 
@@ -239,8 +239,8 @@ contract MasterChef is Ownable {
     }
 
     //Pancake has to add hidden dummy pools inorder to alter the emission, here we make it simple and transparent to all.
-    function updateEmissionRate(uint256 _eggPerBlock) public onlyOwner {
+    function updateEmissionRate(uint256 _boatPerBlock) public onlyOwner {
         massUpdatePools();
-        eggPerBlock = _eggPerBlock;
+        boatPerBlock = _boatPerBlock;
     }
 }
