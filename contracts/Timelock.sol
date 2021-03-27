@@ -34,6 +34,7 @@ contract Timelock {
     address public pendingAdmin;
     uint public delay;
     bool public admin_initialized;
+    uint public timestamp = block.timestamp;
 
     mapping (bytes32 => bool) public queuedTransactions;
 

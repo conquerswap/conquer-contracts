@@ -6,7 +6,7 @@ https://conquerswap.finance Feel free to read the code. More details coming soon
 
 ### BSCMAINNET
 
-- BoatToken - https://bscscan.com/token/0x094B21EcC329DE2e8F24C51aBd5188c608403643
-- MasterChef - https://bscscan.com/address/0x05aC90Cc311B212745C3c1AFfC5cbF550da0fb16
-- Timelock - https://bscscan.com/address/0x509fe44B4a9CcCD4bbeaC085a0BF486df16Bd088
+- BoatToken - https://bscscan.com/token/0xA9AD102640fbcf9E177c647335130be39652006e
+- MasterChef - https://bscscan.com/address/0x46fdB1520906f521153d4DFBD71889c2E6593Ab8
+- Timelock - https://bscscan.com/address/0x946cef8d6a36AD5c9D99fACE0037d38064A07a26
 - MultiCall - https://bscscan.com/address/0x1ee38d535d541c55c9dae27b12edf090c608e6fb
